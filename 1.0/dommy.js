@@ -7,6 +7,7 @@
 *   Copyright: Copyright (c) 2018 Riccardo Degni (http://www.rdsolutions.com)
 **/
 
+
 /**
 *   GLOBAL METHODS
 *   Utilities
@@ -60,6 +61,7 @@ var ElementListObj = {};
     obj.add(ElementListObj);
 });
 
+
 /**
 *   OBJECT METHODS
 *   Extend the Object object
@@ -86,14 +88,15 @@ if( !Object.prototype.forEach ) {
 *   Extend the Element object
 **/
 HTMLElement.prototype.add({ 
-    /*
-    	Method: css
-    	What:	sets or gets the css of the element
-    	How:	el.css('display');
-    			el.css(['display', 'color']);
-    			el.css('display', 'block');
-    			el.css({'display': 'block'});
-    */
+/**
+*	@ Method: css
+*	@ What:	sets or gets the css of the element
+*	@ How:	
+*	el.css('display');
+*	el.css(['display', 'color']);
+*	el.css('display', 'block');
+*	el.css({'display': 'block'});
+**/
 	'css': function() {
 		var cssObj = window.getComputedStyle(this);
 		switch( arguments.length ) {
@@ -132,13 +135,14 @@ HTMLElement.prototype.add({
 		}
 	},
     
-    /*
-    	Method: attr
-    	What:	sets or gets the attribute of the element
-    	How:	el.attr('display');
-                el.attr('display', 'block');
-                el.attr({'display', 'block'});	
-    */
+/**
+*	@ Method: attr
+*	@ What:	sets or gets the attribute of the element
+*	@ How:	
+*	el.attr('src');
+*	el.attr('src', 'myimg.jpg');
+*	el.attr({'src', 'myimg.jpg'}, 'alt': 'alt text');
+**/
     'attr': function() {
         switch( arguments.length ) {
             case 1:
@@ -166,20 +170,22 @@ HTMLElement.prototype.add({
         return this;
     },
 	
-    /*
-    	Method: fx
-    	What:	produces a CSS3 animation on an element
-    	How:	el.fx({'color': 'red'}, 2000);	
-    */
+/**
+*	@ Method: fx
+*	@ What:	produces a CSS3 animation on an element
+*	@ How:	
+*	el.fx({'color': 'red'}, 2000, callbackFn);
+**/
 	'fx': function(css, duration, callback, chainFx) {
         var duration = duration || 5;
-        var props = {
-        	'transition-property': 'all',
+		var props = {
+			'transition-property': 'all',
             'transition-duration': duration + 's',
             'transition-timing-function': 'linear'
-        };
+		};
         var fullDuration = duration*1000;
         var thisObj = this;
+        if( typeOf(chainFx) == 'undefined' ) chainFx = false;
         
         if( this.chain == 0 ) {
             if(chainFx) this.chain++;
@@ -205,11 +211,12 @@ HTMLElement.prototype.add({
     
     'chain': 0,
     
-    /*
-    	Method: event
-    	What:	attaches and event to an element
-    	How:	el.event('click', fn);	
-    */
+/**
+*	@ Method: event
+*	@ What:	attaches and event to an element
+*	@ How:	
+*	el.event('click', fn);
+**/
     'event': function(eventName, fn, bubble) {
         var bubble = bubble ? true : false;
         if (this.addEventListener) {                    
@@ -221,12 +228,13 @@ HTMLElement.prototype.add({
         return this;
     },
     
-    /*
-    	Method: html
-    	What:	sets or gets the innerHTML of an element
-    	How:	el.html('new content');	
-                el.html();
-    */
+/**
+*	@ Method: event
+*	@ What:	sets or gets the innerHTML of an element
+*	@ How:	
+*	el.html('new content');
+*   el.html();
+**/
     'html': function(html) {
         if(html) {
             this.innerHTML = html;
@@ -238,36 +246,39 @@ HTMLElement.prototype.add({
     
     'storage': {},
     
-    /*
-    	Method: set
-    	What:	sets a storage value
-    	How:	el.set('a', 'a');	
-    */
+/**
+*	@ Method: set
+*	@ What:	sets a storage value
+*	@ How:	
+*	el.set('a', 'a');
+**/
     'set': function(name, value) {
         this.storage[name] = value;
         return this;
     },
     
-    /*
-    	Method: get
-    	What:	gets a storage value
-    	How:	el.get('a');	
-    */
+/**
+*	@ Method: get
+*	@ What:	gets a storage value
+*	@ How:	
+*	el.get('a');
+**/
     'get': function(name) {
-        return typeof(this.storage[name] !== 'undefined') ? this.storage[name] : undefined;
+        return typeOf(this.storage[name] != 'undefined') ? this.storage[name] : undefined;
     }
 });
 
-/**
-*   WINDOW METHODS
-*   Extend the Window object
-**/
+/*****
+    WINDOW METHODS
+	Extend the Window object
+*****/
 
-/*
-    Method: $$$
-    What:	fires the event handler when DOM is ready
-    How:	$$$(fn);
-*/
+/**
+*	@ Method: $$$
+*	@ What:	fires the event handler when DOM is ready
+*	@ How:	
+*	$$$(fn)
+**/
 var DomReady = {
     'bindReady': function(handler) {
         var called = false;     
@@ -275,8 +286,7 @@ var DomReady = {
             if (called) return;
             called = true;
             handler();
-        }   
-          
+        }     
         if ( document.addEventListener ) {
             document.addEventListener( "DOMContentLoaded", function() {
                 ready();
@@ -301,7 +311,6 @@ var DomReady = {
                 }
             })
         }
-        
         if (window.addEventListener)
             window.addEventListener('load', ready, false);
         else if (window.attachEvent)
@@ -324,21 +333,23 @@ var DomReady = {
 
 window.add(DomReady);
 window.add({
-    /*
-    	Method: log
-    	What:	logs the arguments. Useful for debugging purposes
-    	How:	log(a, b, c);
-    */
+/**
+*	@ Method: log
+*	@ What:	logs the arguments. Useful for debugging purposes
+*	@ How:	
+*	log(a, b, c);
+**/
 	'log': function() {
-        if( typeof(console) === 'undefined' ) return;
+		if( typeof(console) === 'undefined' ) return;
 		console.log.apply(console, arguments);
 	},
 	
-    /*
-    	Method: typeOf
-    	What:	returns the type of a variable
-    	How:	typeOf(a);
-    */
+/**
+*	@ Method: typeOf
+*	@ What:	returns the type of a variable
+*	@ How:	
+*	typeOf(a);
+**/
 	'typeOf': function(variable) {
 		var type = typeof(variable);
 		
@@ -353,30 +364,32 @@ window.add({
 		}
 	},
 
-    /*
-    	Method: $
-    	What:	shortcut for document.getElementById
-    	How:	$('a');
-    */
+/**
+*	@ Method: $
+*	@ What:	returns an element by ID
+*	@ How:	
+*	$('a');
+**/
 	'$': function(el) {
-        var type = typeof(el);
-        
-        switch ( type ) {
-        	case 'string':
-        		return document.getElementById(el);
-        		break;
-        	
-        	case 'object':
-        		return el;
-        		break;
-        }
+		var type = typeof(el);
+		
+		switch ( type ) {
+			case 'string':
+				return document.getElementById(el);
+				break;
+			
+			case 'object':
+				return el;
+				break;
+		}	
 	},
 	
-    /*
-    	Method: $$
-    	What:	returns an array of Elements matching a css query selector
-    	How:	$$('div#a div');
-    */
+/**
+*	@ Method: $$$
+*	@ What:	returns an array of Elements matching a css query selector
+*	@ How:	
+*	$$('div#a div');
+**/
 	'$$': function(sel) {
 		var el = document.querySelectorAll(sel);
 		return el.length == 1 ? el[0] : el;

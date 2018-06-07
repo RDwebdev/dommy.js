@@ -7,7 +7,6 @@
 *   Copyright: Copyright (c) 2018 Riccardo Degni (http://www.rdsolutions.com)
 **/
 
-
 /**
 *   GLOBAL METHODS
 *   Utilities
@@ -49,7 +48,7 @@ var Globals = {
 **/
 var ElementListObj = {};
 
-['css', 'fx', 'attr', 'html', 'set', 'get']
+['css', 'fx', 'attr', 'html', 'on', 'set', 'get']
 .forEach(function(method, i) {
     ElementListObj[method] = function() {
         return Globals.Elements.callMethod(method, arguments, this);
@@ -97,7 +96,7 @@ HTMLElement.prototype.add({
 *	el.css('display', 'block');
 *	el.css({'display': 'block'});
 **/
-	'css': function() {
+    'css': function() {
 		var cssObj = window.getComputedStyle(this);
 		switch( arguments.length ) {
 			case 1:
@@ -176,7 +175,7 @@ HTMLElement.prototype.add({
 *	@ How:	
 *	el.fx({'color': 'red'}, 2000, callbackFn);
 **/
-	'fx': function(css, duration, callback, chainFx) {
+    'fx': function(css, duration, callback, chainFx) {
         var duration = duration || 5;
 		var props = {
 			'transition-property': 'all',
@@ -212,24 +211,41 @@ HTMLElement.prototype.add({
     'chain': 0,
     
 /**
-*	@ Method: event
+*	@ Method: on
 *	@ What:	attaches and event to an element
 *	@ How:	
-*	el.event('click', fn);
+*	el.on('click', fn);
+*   el.on({'click': fn, 'mouseover': fn});
 **/
-    'event': function(eventName, fn, bubble) {
+    'on': function(eventName, fn, bubble) {
         var bubble = bubble ? true : false;
-        if (this.addEventListener) {                    
-            this.addEventListener(eventName, fn, bubble);
-        } else if (this.attachEvent) {                  
-            this.attachEvent(eventName, fn);
+        
+        switch ( window.typeOf(eventName) ) {
+            case 'string':
+                if (this.addEventListener) {                    
+                    this.addEventListener(eventName, fn, bubble);
+                } else if (this.attachEvent) {                  
+                    this.attachEvent(eventName, fn);
+                }
+            break;
+            
+            case 'object':
+                bubble = fn ? true : false;
+                for(var evt in eventName) {
+                    if (this.addEventListener) {                    
+                        this.addEventListener(evt, eventName[evt], fn);
+                    } else if (this.attachEvent) {                  
+                        this.attachEvent(evt, eventName[evt]);
+                    } 
+                }
+            break;
         }
         
         return this;
     },
     
 /**
-*	@ Method: event
+*	@ Method: html
 *	@ What:	sets or gets the innerHTML of an element
 *	@ How:	
 *	el.html('new content');

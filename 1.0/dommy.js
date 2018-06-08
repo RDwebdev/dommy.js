@@ -267,9 +267,23 @@ HTMLElement.prototype.add({
 *	@ What:	sets a storage value
 *	@ How:	
 *	el.set('a', 'a');
+*	el.set({'a': 'a', 'b': 'b'});
 **/
-    'set': function(name, value) {
-        this.storage[name] = value;
+    'set': function() {
+        switch( arguments.length ) {
+            case 1:
+                var prop;
+                for(prop in arguments[0]) {
+                    this.storage[prop] = arguments[0][prop];
+                }
+                return this;
+                break;
+            
+            case 2:
+                this.storage[arguments[0]] = arguments[1];
+                return this;
+                break;
+        }
         return this;
     },
     

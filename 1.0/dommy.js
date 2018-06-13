@@ -172,7 +172,7 @@ HTMLElement.prototype.add({
             
             clearTimeout(this.callbackTimeout);
             if( callback )
-                this.callbackTimeout = setTimeout(callback.bind(this, callback.arguments), fullDuration, this);
+                this.callbackTimeout = setTimeout(callback.bind(this), fullDuration, this);
 
             if( chainFx ) {
                 var el = this;

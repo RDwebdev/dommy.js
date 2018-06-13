@@ -169,9 +169,10 @@ HTMLElement.prototype.add({
             if(chainFx) this.chain++;
 
             this.css(props).css(css);
-
+            
+            clearTimeout(this.callbackTimeout);
             if( callback )
-                setTimeout(callback, fullDuration, this);
+                this.callbackTimeout = setTimeout(callback.bind(this, callback.arguments), fullDuration, this);
 
             if( chainFx ) {
                 var el = this;
@@ -181,13 +182,14 @@ HTMLElement.prototype.add({
             }
         }
         else if( chainFx ) {
-            setTimeout(this.fx.bind(this, css, duration, callback, true), fullDuration+10);   //+10 prevents IE crazyness
+            setTimeout(this.fx.bind(this, css, duration, callback.bind(this), true), fullDuration+10);   //+10 prevents IE crazyness
         }
 
         return this;
     },
 
     'chain': 0,
+    'callbackTimeout': false,
 
 /**
 *	@ Method: on

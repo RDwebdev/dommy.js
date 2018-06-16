@@ -1,16 +1,17 @@
 /**
 *   DOMmy.JS
-*   Author:    Riccardo Degni (http://www.rdsolutions.com)
+*   Author:    Riccardo Degni (http://www.riccardodegni.com)
 *   What:      Allows modern and super lite DOM navigation, Elements Collections,
 *              CSS styles, FX animations through CSS3, Events, Storage, DOMReady
 *   License:   MIT License
-*   Copyright: Copyright (c) 2018 Riccardo Degni (http://www.rdsolutions.com)
+*   Copyright: Copyright (c) 2018 Riccardo Degni (http://www.riccardodegni.com)
 **/
 
 /**
 *   GLOBAL METHODS
 *   Utilities
 **/
+(function() {
 var Globals = {
     '_add': function() {
     	switch( arguments.length ) {
@@ -157,9 +158,18 @@ HTMLElement.prototype.add({
     'fx': function(css, duration, callback, chainFx) {
         var duration = duration || 5;
         var props = {
+            // standard
             'transition-property': 'all',
             'transition-duration': duration + 's',
-            'transition-timing-function': 'linear'
+            'transition-timing-function': 'linear',
+            // old safari
+            '-webkit-transition-property': 'all',
+            '-webkit-transition-duration': duration + 's',
+            '-webkit-transition-timing-function': 'linear',
+            // old mozilla
+            '-moz-transition-property': 'all',
+            '-moz-transition-duration': duration + 's',
+            '-moz-transition-timing-function': 'linear',
         };
         var fullDuration = duration*1000;
         var thisObj = this;
@@ -423,3 +433,4 @@ window.add({
         return el.length == 1 ? el[0] : el;
     }
 });
+})(window);

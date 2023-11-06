@@ -4,4 +4,4 @@
 
 ### The core of DOMmy.js lies in two functions: `$` and `$$` which allows to respectively select one element by id and a full collection of elements by a CSS selector. Once you get your element or element collection, you can use the DOMmy.js methods to seamlessy work with DOM operations. Setter methods, like `html`, `css`, `on`, `attr` etc. allow to set data, and are chainable, while getter methods such as `getStyle`, `getCSS`, `getAttr` etc. allow to retrieve data.
 
-Visit [DOMmy.js](https://www.riccardodegni.com/projects/dommy) for more info.
+Visit [DOMmy.js Home Page on RiccardoDegni.com](https://www.riccardodegni.com/projects/dommy) for more info.
